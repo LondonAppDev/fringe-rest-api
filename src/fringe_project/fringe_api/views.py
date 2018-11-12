@@ -1,4 +1,5 @@
 from django.shortcuts import render
+from django.utils import timezone
 from rest_framework import viewsets
 from rest_framework.authtoken.serializers import AuthTokenSerializer
 from rest_framework.authtoken.views import ObtainAuthToken
@@ -30,5 +31,6 @@ class LoginViewSet(viewsets.ViewSet):
         """Use the ObtainAuthToken APIView to validate and create a token."""
 
         token = ObtainAuthToken().post(request)
-        update_last_login(None, request.user)
+        user = request.user
+        user.last_login = timezone.now()
         return token
